@@ -1,3 +1,24 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }]
-}
+  "version": 2,
+  "builds": [
+   {
+    "src": "index.js",
+    "use": "@vercel/node",
+    "config": { "includeFiles": ["dist/**"] }
+   }
+  ],
+  "routes": [
+   {
+    "src": "/(.*)",
+    "dest": "index.js"
+   }
+  ],
+  "functions": {
+      "api/test.js": {
+        "maxDuration": 30 
+      },
+      "api/*.js": {
+        "maxDuration": 15 
+      }
+    }
+ }

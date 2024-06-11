@@ -39,7 +39,9 @@ const AttendedEventCard = ({ event }) => {
         `${process.env.REACT_APP_BACKEND_URL}/api/events/${event}`
       );
       const data = await response.json();
-      setTitle(data.title);
+      if (data.title) {
+        setTitle(data.title);
+      }
       console.log(data.title);
       setDescription(data.description);
       console.log(data.description);

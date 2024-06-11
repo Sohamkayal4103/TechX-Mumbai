@@ -31,17 +31,20 @@ export default function Navbar() {
     let name = user.name;
     let email = user.email;
     let image = user.picture;
-    let result = await fetch("http://localhost:5000/api/users/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        image,
-      }),
-    });
+    let result = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/users/add`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          image,
+        }),
+      }
+    );
 
     result = await result.json();
     console.log(result);
@@ -133,20 +136,19 @@ export default function Navbar() {
                 </MenuList>
               </Menu>
             )}
-            {!isAuthenticated && !isLoading &&
-              (
-                <Button
-                  display="flex"
-                  flexDir="row"
-                  variant={"solid"}
-                  colorScheme={"teal"}
-                  size={"sm"}
-                  mr={4}
-                  leftIcon={<Icon as={CgProfile} boxSize={6} />}
-                >
-                  <LoginButton />
-                </Button>
-              )}
+            {!isAuthenticated && !isLoading && (
+              <Button
+                display="flex"
+                flexDir="row"
+                variant={"solid"}
+                colorScheme={"teal"}
+                size={"sm"}
+                mr={4}
+                leftIcon={<Icon as={CgProfile} boxSize={6} />}
+              >
+                <LoginButton />
+              </Button>
+            )}
             {isLoading && <div>Loading...</div>}
           </Flex>
         </Flex>

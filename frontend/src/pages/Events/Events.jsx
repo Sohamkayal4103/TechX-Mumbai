@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid,Flex } from "@chakra-ui/react";
+import { Grid, Flex } from "@chakra-ui/react";
 
 import EventCard from "../../components/EventCard/EventCard";
 
@@ -7,7 +7,9 @@ const Events = () => {
   const [events, setEvents] = useState([]);
   useEffect(() => {
     const getEvents = async () => {
-      const response = await fetch("http://localhost:5000/api/events");
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/events`
+      );
       const data = await response.json();
       setEvents(data);
     };

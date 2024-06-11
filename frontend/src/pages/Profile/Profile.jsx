@@ -28,7 +28,7 @@ export const Profile = () => {
   useEffect(() => {
     const getUser = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/users/${user.email}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/${user.email}`,
         {
           method: "GET",
           headers: {

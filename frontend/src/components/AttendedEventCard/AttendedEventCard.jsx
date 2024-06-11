@@ -35,7 +35,9 @@ const AttendedEventCard = ({ event }) => {
   useEffect(() => {
     const eventId = window.location.pathname.split("/")[2];
     const getEvent = async () => {
-      const response = await fetch(`http://localhost:5000/api/events/${event}`);
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/api/events/${event}`
+      );
       const data = await response.json();
       setTitle(data.title);
       console.log(data.title);

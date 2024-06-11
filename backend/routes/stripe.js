@@ -6,7 +6,7 @@ const stripe = require("stripe")(
 );
 
 router.post("/create-checkout-session", async (req, res) => {
-  const { id,price, name, description, image } = req.body;
+  const { id, price, name, description, image } = req.body;
   const session = await stripe.checkout.sessions.create({
     line_items: [
       {

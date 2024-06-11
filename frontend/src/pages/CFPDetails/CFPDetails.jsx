@@ -48,7 +48,7 @@ export default function CFPDetails() {
   useEffect(() => {
     const getCFP = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/cfps/event/${id}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/cfps/event/${id}`
       );
       const data = await response.json();
       console.log(data);

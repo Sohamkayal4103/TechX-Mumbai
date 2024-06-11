@@ -439,13 +439,13 @@ export default function multistep() {
                 variant="solid"
                 onClick={async () => {
                   const res = await fetch(
-                    `http://localhost:5000/api/users/${email}`
+                    `${process.env.REACT_APP_BACKEND_URL}/api/users/${email}`
                   );
                   const data = await res.json();
                   setId(data._id);
                   console.log(id);
                   let events = await fetch(
-                    `http://localhost:5000/api/events/add`,
+                    `${process.env.REACT_APP_BACKEND_URL}/api/events/add`,
                     {
                       method: "POST",
                       headers: {

@@ -38,7 +38,7 @@ export default function Simple() {
     const eventId = window.location.pathname.split("/")[2];
     const getEvent = async () => {
       const response = await fetch(
-        `http://localhost:5000/api/events/${eventId}`
+        `${process.env.REACT_APP_BACKEND_URL}/api/events/${eventId}`
       );
       const data = await response.json();
       setOrgemail(data.organizer.email);
@@ -61,7 +61,7 @@ export default function Simple() {
       if (event.price && event.title && event.description) {
         console.log("all good");
         let response = await fetch(
-          "http://localhost:5000/api/stripe/create-checkout-session",
+          `${process.env.REACT_APP_BACKEND_URL}/api/stripe/create-checkout-session`,
           {
             method: "POST",
             headers: {

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLinkedin,
@@ -19,36 +19,37 @@ import {
 } from "@chakra-ui/react";
 
 function CFPForm() {
-
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [isApproved, setIsApproved] = useState(false)
-  const [userId, setUserId] = useState('')
-  const [eventId, setEventId] = useState('')
-  const [github, setGithub] = useState('')
-  const [linkedin, setLinkedin] = useState('')
-  const [twitter, setTwitter] = useState('')
-  const [website, setWebsite] = useState('')
-  const [blog, setBlog] = useState('')
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [isApproved, setIsApproved] = useState(false);
+  const [userId, setUserId] = useState("");
+  const [eventId, setEventId] = useState("");
+  const [github, setGithub] = useState("");
+  const [linkedin, setLinkedin] = useState("");
+  const [twitter, setTwitter] = useState("");
+  const [website, setWebsite] = useState("");
+  const [blog, setBlog] = useState("");
 
   useEffect(() => {
     getUser();
   }, []);
 
   const getUser = async () => {
-    const response = await fetch(`http://localhost:5000/api/users/`);
+    const response = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/api/users/`
+    );
     const data = await response.json();
     setUserId(data[0]._id);
     console.log(data[0]._id);
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     const eventId = window.location.pathname.split("/")[2];
-    // const response = await fetch(`http://localhost:5000/api/users/`);
+    // const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/`);
     // const data = await response.json();
     // setUserId(data[0]._id);
     // console.log(data[0]._id);
-    e.preventDefault()
+    e.preventDefault();
     const cfp = {
       title,
       description,
@@ -60,18 +61,18 @@ function CFPForm() {
       twitter,
       website,
       blog,
-    }
-    console.log(cfp)
+    };
+    console.log(cfp);
 
-    const res = fetch('http://localhost:5000/api/cfps/add', {
-      method: 'POST',
+    const res = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cfps/add`, {
+      method: "POST",
       headers: {
-        'Content-type': 'application/json'
+        "Content-type": "application/json",
       },
-      body: JSON.stringify(cfp)
-    })
-    console.log(res)
-  }
+      body: JSON.stringify(cfp),
+    });
+    console.log(res);
+  };
 
   return (
     <>
@@ -95,7 +96,14 @@ function CFPForm() {
             <FormLabel htmlFor="first-name" fontWeight={"normal"}>
               Title
             </FormLabel>
-            <Input id="title" type="text" placeholder="Title" onChange={(e)=>{setTitle(e.target.value)}} />
+            <Input
+              id="title"
+              type="text"
+              placeholder="Title"
+              onChange={(e) => {
+                setTitle(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -103,7 +111,13 @@ function CFPForm() {
             <FormLabel fontWeight={"normal"} my={"2%"}>
               Description
             </FormLabel>
-            <Textarea id="description" type="textarea" onChange={(e)=>{setDescription(e.target.value)}}/>
+            <Textarea
+              id="description"
+              type="textarea"
+              onChange={(e) => {
+                setDescription(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -116,7 +130,13 @@ function CFPForm() {
                 color={"white"}
               />
             </FormLabel>
-            <Input id="github" type="text" onChange={(e)=>{setGithub(e.target.value)}} />
+            <Input
+              id="github"
+              type="text"
+              onChange={(e) => {
+                setGithub(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -128,7 +148,13 @@ function CFPForm() {
                 style={{ marginLeft: "10px" }}
               />
             </FormLabel>
-            <Input id="linkedin" type="text" onChange={(e)=>{setLinkedin(e.target.value)}} />
+            <Input
+              id="linkedin"
+              type="text"
+              onChange={(e) => {
+                setLinkedin(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -140,7 +166,13 @@ function CFPForm() {
                 style={{ marginLeft: "10px", color: "lightblue" }}
               />
             </FormLabel>
-            <Input id="twitter" type="text" onChange={(e)=>{setTwitter(e.target.value)}} />
+            <Input
+              id="twitter"
+              type="text"
+              onChange={(e) => {
+                setTwitter(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -149,7 +181,13 @@ function CFPForm() {
               Website{" "}
               <FontAwesomeIcon icon={faLink} style={{ marginLeft: "10px" }} />
             </FormLabel>
-            <Input id="website" type="text" onChange={(e)=>{setWebsite(e.target.value)}} />
+            <Input
+              id="website"
+              type="text"
+              onChange={(e) => {
+                setWebsite(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Flex>
@@ -158,7 +196,13 @@ function CFPForm() {
               Blog{" "}
               <FontAwesomeIcon icon={faBlog} style={{ marginLeft: "10px" }} />
             </FormLabel>
-            <Input id="blog" type="text" onChange={(e)=>{setBlog(e.target.value)}} />
+            <Input
+              id="blog"
+              type="text"
+              onChange={(e) => {
+                setBlog(e.target.value);
+              }}
+            />
           </FormControl>
         </Flex>
         <Button colorScheme="teal" my={10} mx={"35%"} onClick={handleSubmit}>

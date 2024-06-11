@@ -36,7 +36,7 @@ const AttendedEventCard = ({ event }) => {
     const eventId = window.location.pathname.split("/")[2];
     const getEvent = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/api/events/${event}`
+        `${import.meta.env.VITE_BACKEND_URL}/api/events/${event}`
       );
       const data = await response.json();
       if (data.title) {

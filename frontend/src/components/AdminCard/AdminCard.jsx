@@ -40,7 +40,7 @@ export default function AdminCard({
   console.log(email);
   const approveEvent = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/events/approval/${id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/events/approval/${id}`,
       {
         method: "PUT",
         headers: {

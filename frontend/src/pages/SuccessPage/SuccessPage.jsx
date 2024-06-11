@@ -13,7 +13,7 @@ const SuccessPage = () => {
   const eventId = window.location.pathname.split("/")[2];
   const getUser = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/users/${user.email}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/${user.email}`
     );
     const data = await response.json();
     console.log(data);
@@ -23,7 +23,7 @@ const SuccessPage = () => {
       var ind = data.attendedEvents.indexOf(eventId);
       if (ind == -1) {
         const res2 = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/api/users/update/${data._id}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/users/update/${data._id}`,
           {
             method: "PUT",
             headers: {
@@ -41,7 +41,7 @@ const SuccessPage = () => {
 
   const getEvent = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/events/${eventId}`
+      `${import.meta.env.VITE_BACKEND_URL}/api/events/${eventId}`
     );
     const data = await response.json();
     console.log(data);
@@ -51,7 +51,7 @@ const SuccessPage = () => {
     if (dbUser._id) {
       if (ind == -1) {
         const res2 = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/api/events/attendees/${eventId}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/events/attendees/${eventId}`,
           {
             method: "PUT",
             headers: {

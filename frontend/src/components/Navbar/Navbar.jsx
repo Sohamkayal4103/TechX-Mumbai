@@ -32,7 +32,7 @@ export default function Navbar() {
     let email = user.email;
     let image = user.picture;
     let result = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/users/add`,
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/add`,
       {
         method: "POST",
         headers: {

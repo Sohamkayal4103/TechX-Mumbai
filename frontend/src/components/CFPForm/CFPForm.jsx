@@ -36,7 +36,7 @@ function CFPForm() {
 
   const getUser = async () => {
     const response = await fetch(
-      `${process.env.REACT_APP_BACKEND_URL}/api/users/`
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/`
     );
     const data = await response.json();
     setUserId(data[0]._id);
@@ -45,7 +45,7 @@ function CFPForm() {
 
   const handleSubmit = async (e) => {
     const eventId = window.location.pathname.split("/")[2];
-    // const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/users/`);
+    // const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/users/`);
     // const data = await response.json();
     // setUserId(data[0]._id);
     // console.log(data[0]._id);
@@ -64,7 +64,7 @@ function CFPForm() {
     };
     console.log(cfp);
 
-    const res = fetch(`${process.env.REACT_APP_BACKEND_URL}/api/cfps/add`, {
+    const res = fetch(`${import.meta.env.VITE_BACKEND_URL}/api/cfps/add`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

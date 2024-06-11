@@ -23,7 +23,7 @@ const Admin = () => {
   useEffect(() => {
     const getEvents = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/api/events`
+        `${import.meta.env.VITE_BACKEND_URL}/api/events`
       );
       const data = await response.json();
       setEvents(data);

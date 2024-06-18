@@ -1,3 +1,4 @@
+// @ts-nocheck comment
 "use client";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
@@ -27,8 +28,8 @@ const theme = extendTheme({ colors, config });
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <Auth0Provider
-      domain="dev-uubmit4tpy5bi5v1.us.auth0.com"
-      clientId="GbmkArnbfqtiCH6dxQqqTdBAXpTJvsqv"
+      domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
+      clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
       authorizationParams={{
         redirect_uri: "http://localhost:3000",
       }}

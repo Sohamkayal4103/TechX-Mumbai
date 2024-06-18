@@ -97,7 +97,6 @@ const createEvent = asyncHandler(async (req, res) => {
     description,
     time,
     date,
-    image,
     mode,
     location,
     price,
@@ -112,6 +111,9 @@ const createEvent = asyncHandler(async (req, res) => {
     latitude,
     longitude,
   } = req.body;
+
+  const image = req.file.filename;
+  console.log(image);
 
   const event = await Event.create({
     title,

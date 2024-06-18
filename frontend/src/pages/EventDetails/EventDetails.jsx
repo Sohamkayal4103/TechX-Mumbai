@@ -46,12 +46,11 @@ export default function Simple() {
       setTitle(data.title);
       setDescription(data.description);
       setPrice(data.price);
-      setImage(data.image);
+      setImage(`${import.meta.env.VITE_BACKEND_URL}/images/${data.image}`);
+      console.log(image);
       setAttendees(data.attendees);
       setLat(data.latitude);
       setLng(data.longitude);
-
-      console.log(data.latitude, data.longitude);
     };
     getEvent();
 
@@ -59,7 +58,6 @@ export default function Simple() {
       console.log(price);
       console.log(title);
       if (event.price && event.title && event.description) {
-        console.log("all good");
         let response = await fetch(
           `${
             import.meta.env.VITE_BACKEND_URL
@@ -99,6 +97,7 @@ export default function Simple() {
             rounded={"md"}
             alt={"product image"}
             src={
+              image ||
               "https://www.travelperk.com/wp-content/uploads/alexandre-pellaes-6vAjp0pscX0-unsplash-1-1-720x480.jpg"
             }
             fit={"cover"}
@@ -254,7 +253,7 @@ export default function Simple() {
           >
             Apply as volunteer
           </Button>
-          {user.email === orgemail ? (
+          {user?.email === orgemail ? (
             <Button
               rounded={"none"}
               w={"md"}

@@ -12,6 +12,7 @@ const Events = () => {
       );
       const data = await response.json();
       setEvents(data);
+      console.log(data);
     };
 
     getEvents();

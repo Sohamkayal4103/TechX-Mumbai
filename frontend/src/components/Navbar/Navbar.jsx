@@ -28,26 +28,30 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const collectData = async () => {
-    let name = user.name;
-    let email = user.email;
-    let image = user.picture;
-    let result = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/users/add`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          email,
-          image,
-        }),
-      }
-    );
+    try {
+      let name = user.name;
+      let email = user.email;
+      let image = user.picture;
+      let result = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/users/add`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            image,
+          }),
+        }
+      );
 
-    result = await result.json();
-    console.log(result);
+      result = await result.json();
+      //console.log(result);
+    } catch (e) {
+      console.log("User Exists");
+    }
   };
 
   if (isAuthenticated) {

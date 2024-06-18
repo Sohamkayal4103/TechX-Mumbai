@@ -16,25 +16,23 @@ export default function EventCard({
   title,
   description,
   isApproved,
-  time,
-  date,
   image,
   mode,
-  location,
-  price,
-  speakerApplications,
-  speakers,
-  attendees,
-  volunteers,
-  tickets,
-  volunteersApplications,
   organizer,
   domain,
 }) {
   const Navigate = useNavigate();
+  console.log(id);
+  console.log(title);
+  console.log(description);
+  console.log(isApproved);
+  image = `${import.meta.env.VITE_BACKEND_URL}/images/${image}`;
+  console.log(image);
+  console.log(organizer);
+
   return (
     <div>
-      {isApproved && (
+      {!isApproved && (
         <Center py={6}>
           <Box
             maxW={"445px"}
@@ -72,16 +70,23 @@ export default function EventCard({
                 fontSize={"2xl"}
                 fontFamily={"body"}
               >
-                {title}
+                {title || "Event Title"}
               </Heading>
               <Text color={"gray.500"}>
-                {description.substring(0, 200) + "..."}
+                {description.substring(0, 200) + "..." || "Event Description"}
               </Text>
             </Stack>
             <Stack mt={6} direction={"row"} spacing={4} align={"center"}>
-              <Avatar src={organizer.image} alt={"Author"} />
+              <Avatar
+                src={
+                  organizer.image
+                    ? organizer.image
+                    : "https://www.travelperk.com/wp-content/uploads/alexandre-pellaes-6vAjp0pscX0-unsplash-1-1-720x480.jpg"
+                }
+                alt={"Author"}
+              />
               <Stack direction={"column"} spacing={0} fontSize={"sm"}>
-                <Text fontWeight={600}>{organizer.name}</Text>
+                <Text fontWeight={600}>{organizer?.name || "Organizer"}</Text>
                 <Text color={"gray.500"}>Feb 08, 2021 </Text>
               </Stack>
               <Stack>

@@ -27,6 +27,7 @@ import { CheckIcon } from "@chakra-ui/icons";
 import { useAuth0 } from "@auth0/auth0-react";
 import FileBase64 from "react-file-base64";
 import { LoadScript, StandaloneSearchBox } from "@react-google-maps/api";
+import axios from "axios";
 
 const obj = {
   title: "",
@@ -125,6 +126,11 @@ const Form2 = () => {
   const [datetime, setDatetime] = useState("");
   const [location, setLocation] = useState("");
   const [eventBanner, setEventBanner] = useState("");
+  const [newUser, setNewUser] = useState({
+    name: "",
+    birthdate: "",
+    photo: "",
+  });
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const inputRef = useRef();
@@ -141,10 +147,16 @@ const Form2 = () => {
     }
   };
 
+  const handlePhoto = (e) => {
+    setNewUser({ ...newUser, photo: e.target.files[0] });
+    console.log("Image uploaded");
+    console.log(e.target.files[0]);
+  };
+
   obj.domain = domain;
   obj.datetime = datetime;
   obj.location = location;
-  obj.eventBanner = eventBanner;
+  obj.eventBanner = newUser.photo;
   obj.lat = lat;
   obj.lng = lng;
 
@@ -244,73 +256,72 @@ const Form2 = () => {
           rounded="md"
         >
           <Stack spacing={1} textAlign="center">
-            <FileBase64
-              id="banners"
-              type="file"
-              multiple={false}
-              onDone={({ base64 }) => setEventBanner(base64)}
+            <Icon
+              mx="auto"
+              boxSize={12}
+              color="gray.400"
+              _dark={{
+                color: "gray.500",
+              }}
+              stroke="currentColor"
+              fill="none"
+              viewBox="0 0 48 48"
+              aria-hidden="true"
             >
-              <Icon
-                mx="auto"
-                boxSize={12}
-                color="gray.400"
+              <path
+                d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </Icon>
+            <Flex
+              fontSize="sm"
+              color="gray.600"
+              _dark={{
+                color: "gray.400",
+              }}
+              alignItems="baseline"
+            >
+              <chakra.label
+                htmlFor="file-upload"
+                cursor="pointer"
+                rounded="md"
+                fontSize="md"
+                color="brand.600"
                 _dark={{
-                  color: "gray.500",
+                  color: "brand.200",
                 }}
-                stroke="currentColor"
-                fill="none"
-                viewBox="0 0 48 48"
-                aria-hidden="true"
-              >
-                <path
-                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </Icon>
-              <Flex
-                fontSize="sm"
-                color="gray.600"
-                _dark={{
-                  color: "gray.400",
-                }}
-                alignItems="baseline"
-              >
-                <chakra.label
-                  htmlFor="file-upload"
-                  cursor="pointer"
-                  rounded="md"
-                  fontSize="md"
-                  color="brand.600"
-                  _dark={{
-                    color: "brand.200",
-                  }}
-                  pos="relative"
-                  _hover={{
-                    color: "brand.400",
-                    _dark: {
-                      color: "brand.300",
-                    },
-                  }}
-                >
-                  <span>Upload a file</span>
-                  <VisuallyHidden>
-                    <input id="file-upload" name="file-upload" type="file" />
-                  </VisuallyHidden>
-                </chakra.label>
-                <Text pl={1}>or drag and drop</Text>
-              </Flex>
-              <Text
-                fontSize="xs"
-                color="gray.500"
-                _dark={{
-                  color: "gray.50",
+                pos="relative"
+                _hover={{
+                  color: "brand.400",
+                  _dark: {
+                    color: "brand.300",
+                  },
                 }}
               >
-                PNG, JPG, GIF up to 10MB
-              </Text>
-            </FileBase64>
+                <span>Upload a file</span>
+                <VisuallyHidden>
+                  <input
+                    type="file"
+                    accept=".png, .jpg, .jpeg"
+                    id="file-upload"
+                    name="photo"
+                    onChange={handlePhoto}
+                  />
+                </VisuallyHidden>
+              </chakra.label>
+              <Text pl={1}>or drag and drop</Text>
+            </Flex>
+            <Text
+              fontSize="xs"
+              color="gray.500"
+              _dark={{
+                color: "gray.50",
+              }}
+            >
+              PNG, JPG, GIF up to 10MB
+            </Text>
           </Stack>
         </Flex>
       </FormControl>
@@ -375,9 +386,49 @@ export default function multistep() {
   const [id, setId] = useState("");
 
   const { user } = useAuth0();
-  const email = user.email;
+  const email = user?.email;
   useEffect(() => {}, []);
   const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    formData.append("title", obj.title);
+    formData.append("description", obj.description);
+    formData.append("location", obj.location);
+    formData.append("date", obj.datetime);
+    formData.append("mode", obj.mode);
+    formData.append("price", obj.price);
+    formData.append("tickets", obj.tickets);
+    formData.append("domain", obj.domain);
+    formData.append("image", obj.eventBanner);
+    formData.append("latitude", 0);
+    formData.append("longitude", 0);
+
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/users/${email}`
+    );
+    const data = await res.json();
+    setId(data._id);
+    console.log(id);
+    formData.append("organizer", data._id);
+    axios
+      .post(`${import.meta.env.VITE_BACKEND_URL}/api/events/add`, formData)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    //console.log(events.json());
+    toast({
+      title: "Event Details Submitted.",
+      description: "We've created your account for you.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    setSubmitted(true);
+  };
 
   return (
     <>
@@ -437,45 +488,8 @@ export default function multistep() {
                 w="7rem"
                 colorScheme="red"
                 variant="solid"
-                onClick={async () => {
-                  const res = await fetch(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/users/${email}`
-                  );
-                  const data = await res.json();
-                  setId(data._id);
-                  console.log(id);
-                  let events = await fetch(
-                    `${import.meta.env.VITE_BACKEND_URL}/api/events/add`,
-                    {
-                      method: "POST",
-                      headers: {
-                        "Content-Type": "application/json",
-                      },
-                      body: JSON.stringify({
-                        title: obj.title,
-                        description: obj.description,
-                        mode: obj.mode,
-                        location: obj.location,
-                        date: obj.datetime,
-                        organizer: id,
-                        price: obj.price,
-                        tickets: obj.tickets,
-                        domain: obj.domain,
-                        image: obj.eventBanner,
-                        latitude: obj.lat,
-                        longitude: obj.lng,
-                      }),
-                    }
-                  );
-                  console.log(events.json());
-                  toast({
-                    title: "Event Details Submitted.",
-                    description: "We've created your account for you.",
-                    status: "success",
-                    duration: 3000,
-                    isClosable: true,
-                  });
-                  setSubmitted(true);
+                onClick={() => {
+                  handleSubmit();
                 }}
               >
                 Submit

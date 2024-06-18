@@ -28,6 +28,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/cfps", cfpsRoutes);
 app.use("/api/stripe", striperoute);
+app.use("/images", express.static("images"));
 
 const start = async () => {
   try {
@@ -40,4 +41,4 @@ const start = async () => {
 
 start();
 
-export default app;
+// export default app;

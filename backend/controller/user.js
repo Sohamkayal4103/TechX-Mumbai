@@ -25,8 +25,9 @@ const addUser = asyncHandler(async (req, res) => {
   } = req.body;
   const userExist = await User.findOne({ email });
   if (userExist) {
-    res.status(400);
+    //res.status(400);
     console.log("User already exist");
+    return;
   }
 
   const user = await User.create({
@@ -51,7 +52,7 @@ const addUser = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(400);
-    throw new Error("Invalid user data");
+    console.log("Invalid user data");
   }
 });
 

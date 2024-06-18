@@ -31,7 +31,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
       domain={process.env.NEXT_PUBLIC_AUTH0_DOMAIN}
       clientId={process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: "http://localhost:3000",
+        redirect_uri: process.env.NEXT_PUBLIC_REDIRECT_URL,
       }}
     >
       {" "}

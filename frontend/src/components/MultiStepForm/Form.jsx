@@ -56,7 +56,7 @@ const Form1 = () => {
   obj.mode = mode;
 
   return (
-    <>
+    <div>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
         Add Event Details
       </Heading>
@@ -117,7 +117,7 @@ const Form1 = () => {
           <option>In-Person</option>
         </Select>
       </FormControl>
-    </>
+    </div>
   );
 };
 
@@ -163,7 +163,7 @@ const Form2 = () => {
   console.log(lat, lng);
 
   return (
-    <>
+    <div>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
         Add Event Details
       </Heading>
@@ -322,7 +322,7 @@ const Form2 = () => {
           </Stack>
         </Flex>
       </FormControl>
-    </>
+    </div>
   );
 };
 
@@ -336,7 +336,7 @@ const Form3 = () => {
   console.log(obj);
 
   return (
-    <>
+    <div>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
         Add Event Details
       </Heading>
@@ -372,7 +372,7 @@ const Form3 = () => {
           </InputRightElement>
         </InputGroup>
       </FormControl>
-    </>
+    </div>
   );
 };
 
@@ -428,7 +428,7 @@ export default function multistep() {
   };
 
   return (
-    <>
+    <div>
       <Box
         borderWidth="1px"
         rounded="lg"
@@ -495,6 +495,6 @@ export default function multistep() {
           </Flex>
         </ButtonGroup>
       </Box>
-    </>
+    </div>
   );
 }

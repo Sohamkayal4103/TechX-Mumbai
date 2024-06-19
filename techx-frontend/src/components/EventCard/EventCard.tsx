@@ -10,13 +10,18 @@ import {
   useColorModeValue,
   Image,
   Button,
+  VStack,
 } from "@chakra-ui/react";
 
 const EventCard = ({ event }) => {
+  let img = event.image;
+  img = `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${event.image}`;
+  console.log(img);
   return (
     <Center py={6}>
       <Box
         maxW={"445px"}
+        maxH={"600px"}
         w={"full"}
         bg={useColorModeValue("white", "gray.900")}
         boxShadow={"2xl"}
@@ -28,12 +33,12 @@ const EventCard = ({ event }) => {
           <Image
             src={
               event.image
-                ? event.image
+                ? img
                 : "https://www.travelperk.com/wp-content/uploads/alexandre-pellaes-6vAjp0pscX0-unsplash-1-1-720x480.jpg"
             }
             layout={"fit"}
-            h={"210px"}
             w={"full"}
+            maxH={"210px"}
           />
         </Box>
         <Stack>
@@ -53,8 +58,8 @@ const EventCard = ({ event }) => {
           >
             {event.title || "Event Title"}
           </Heading>
-          <Text color={"gray.500"}>
-            {event.description?.substring(0, 200) + "..." ||
+          <Text minH={"100px"} color={"gray.500"}>
+            {event.description?.substring(0, 150) + "..." ||
               "Event Description"}
           </Text>
         </Stack>
@@ -71,10 +76,21 @@ const EventCard = ({ event }) => {
             <Text fontWeight={600}>
               {event?.organizer?.name || "Organizer"}
             </Text>
-            <Text color={"gray.500"}>Feb 08, 2021 </Text>
+            <VStack>
+              <Text color={"gray.500"}>
+                {event.date?.substring(0, 10)} {event.date?.substring(11, 16)}
+              </Text>
+            </VStack>
           </Stack>
           <Stack>
-            <Text ml={8} color={"green.400"} px={10} fontWeight={"bold"}>
+            <Text
+              ml={8}
+              color={"green.400"}
+              px={10}
+              fontWeight={"bold"}
+              fontSize={{ base: "15px", md: "17px" }}
+              w={{ base: "160px", md: "180px" }}
+            >
               {event?.mode || "Online"}
             </Text>
           </Stack>

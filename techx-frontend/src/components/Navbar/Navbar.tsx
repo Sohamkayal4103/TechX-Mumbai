@@ -50,6 +50,10 @@ const Navbar = () => {
     router.push("/Profile");
   };
 
+  const handleHomeRouting = async () => {
+    router.push("/");
+  };
+
   return (
     <Box
       bg={useColorModeValue("white", "gray.800")}
@@ -73,7 +77,16 @@ const Navbar = () => {
           ml="2"
           color="brand.00"
         >
-          <>EventX</>
+          <Button
+            variant={"link"}
+            size="lg"
+            fontSize={{ base: "20px", lg: "25px" }}
+            onClick={() => {
+              handleHomeRouting();
+            }}
+          >
+            EventX
+          </Button>
         </HStack>
         <Flex alignItems={"center"}>
           {isAuthenticated && (

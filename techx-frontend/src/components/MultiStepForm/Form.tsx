@@ -1,3 +1,5 @@
+//@ts-nocheck comment
+"use client";
 import React, { useState, useEffect, useRef } from "react";
 import {
   Progress,
@@ -25,7 +27,6 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon } from "@chakra-ui/icons";
 import { useAuth0 } from "@auth0/auth0-react";
-import FileBase64 from "react-file-base64";
 import { LoadScript, StandaloneSearchBox } from "@react-google-maps/api";
 import axios from "axios";
 
@@ -43,6 +44,8 @@ const obj = {
 };
 console.log(obj);
 
+// Multistep Form : Step 1
+
 const Form1 = () => {
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
@@ -54,10 +57,9 @@ const Form1 = () => {
   obj.title = title;
   obj.description = description;
   obj.mode = mode;
-
   return (
     <>
-      <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
+      <Heading w="80%" textAlign={"center"} fontWeight="normal" mb="2%">
         Add Event Details
       </Heading>
       <FormControl isRequired>
@@ -79,7 +81,6 @@ const Form1 = () => {
           placeholder="Event Description..."
           rows={3}
           shadow="sm"
-          focusBorderColor="brand.400"
           fontSize={{
             sm: "sm",
           }}
@@ -91,7 +92,6 @@ const Form1 = () => {
       </FormControl>
       <FormControl as={GridItem} colSpan={[6, 3]} mt="2%">
         <FormLabel
-          htmlFor="country"
           fontSize="sm"
           fontWeight="md"
           color="gray.700"
@@ -106,7 +106,6 @@ const Form1 = () => {
           name="mode"
           autoComplete="mode"
           placeholder="Select option"
-          focusBorderColor="brand.400"
           shadow="sm"
           size="sm"
           w="full"
@@ -121,6 +120,8 @@ const Form1 = () => {
   );
 };
 
+// Multistep Form : Step 2
+
 const Form2 = () => {
   const [domain, setDomain] = useState("");
   const [datetime, setDatetime] = useState("");
@@ -134,7 +135,6 @@ const Form2 = () => {
   const [lat, setLat] = useState(0);
   const [lng, setLng] = useState(0);
   const inputRef = useRef();
-
   const handlePlaceChanged = () => {
     const [place] = inputRef.current.getPlaces();
     if (place) {
@@ -161,7 +161,6 @@ const Form2 = () => {
   obj.lng = lng;
 
   console.log(lat, lng);
-
   return (
     <>
       <Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%">
@@ -184,7 +183,6 @@ const Form2 = () => {
           name="domain"
           autoComplete="domain"
           placeholder="Select option"
-          focusBorderColor="brand.400"
           shadow="sm"
           size="sm"
           w="full"
@@ -214,19 +212,25 @@ const Form2 = () => {
           onChange={(e) => setDatetime(e.target.value)}
         />
       </FormControl>
-      <FormControl mt="2%">
-        <FormLabel htmlFor="location" fontWeight={"normal"}>
-          Location
-        </FormLabel>
-        <LoadScript googleMapsApiKey="" libraries={["places"]}>
-          <StandaloneSearchBox
-            onLoad={(ref) => (inputRef.current = ref)}
-            onPlacesChanged={handlePlaceChanged}
+      {obj?.mode === "In-Person" ? (
+        <FormControl mt="2%">
+          <FormLabel htmlFor="location" fontWeight={"normal"}>
+            Location
+          </FormLabel>
+          <LoadScript
+            googleMapsApiKey={process.env.NEXT_PUBLIC_GCLOUD_API_KEY}
+            libraries={["places"]}
           >
-            <Input type="text" id="location" placeholder="Set Location..." />
-          </StandaloneSearchBox>
-        </LoadScript>
-      </FormControl>
+            <StandaloneSearchBox
+              onLoad={(ref) => (inputRef.current = ref)}
+              onPlacesChanged={handlePlaceChanged}
+            >
+              <Input type="text" id="location" placeholder="Set Location..." />
+            </StandaloneSearchBox>
+          </LoadScript>
+        </FormControl>
+      ) : null}
+
       <FormControl mt="2%">
         <FormLabel
           fontSize="sm"
@@ -326,6 +330,8 @@ const Form2 = () => {
   );
 };
 
+// Multistep Form : Step 3
+
 const Form3 = () => {
   const [tickets, setTickets] = useState(0);
   const [price, setPrice] = useState(0);
@@ -376,7 +382,9 @@ const Form3 = () => {
   );
 };
 
-export default function multistep() {
+// Multistep Form : Final Step
+
+const Form = () => {
   const toast = useToast();
   const [step, setStep] = useState(1);
   const [progress, setProgress] = useState(33.33);
@@ -391,25 +399,25 @@ export default function multistep() {
     const formData = new FormData();
     formData.append("title", obj.title);
     formData.append("description", obj.description);
-    formData.append("location", obj.location);
     formData.append("date", obj.datetime);
     formData.append("mode", obj.mode);
     formData.append("price", obj.price);
     formData.append("tickets", obj.tickets);
     formData.append("domain", obj.domain);
     formData.append("image", obj.eventBanner);
+    formData.append("location", obj.location);
     formData.append("latitude", 0);
     formData.append("longitude", 0);
 
     const res = await fetch(
-      `${import.meta.env.VITE_BACKEND_URL}/api/users/${email}`
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${email}`
     );
     const data = await res.json();
     setId(data._id);
     console.log(id);
     formData.append("organizer", data._id);
     axios
-      .post(`${import.meta.env.VITE_BACKEND_URL}/api/events/add`, formData)
+      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/add`, formData)
       .then((res) => {
         console.log(res);
       })
@@ -426,7 +434,6 @@ export default function multistep() {
     });
     setSubmitted(true);
   };
-
   return (
     <>
       <Box
@@ -437,6 +444,9 @@ export default function multistep() {
         p={6}
         m="10px auto"
         as="form"
+        bg={"black"}
+        w={{ base: "400px", md: "600px", lg: "800px" }}
+        borderRadius={"10px"}
       >
         <Progress
           hasStripe
@@ -497,4 +507,6 @@ export default function multistep() {
       </Box>
     </>
   );
-}
+};
+
+export default Form;

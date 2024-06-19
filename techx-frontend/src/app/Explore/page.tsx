@@ -35,7 +35,7 @@ const Explore = () => {
         <div>
           <Grid templateColumns="repeat(3, 1fr)" gap={4} minW={100} m={8}>
             {events.map((event) => (
-              <EventCard key={event._id} event={event} />
+              <EventCard key={event?._id} event={event} />
             ))}
           </Grid>
         </div>

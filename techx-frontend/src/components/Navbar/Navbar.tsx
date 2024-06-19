@@ -51,7 +51,12 @@ const Navbar = () => {
   };
 
   return (
-    <Box bg={useColorModeValue("white", "gray.800")} px={10}>
+    <Box
+      bg={useColorModeValue("white", "gray.800")}
+      px={10}
+      borderBottomWidth={"0.1px "}
+      borderBottomColor={"white.800"}
+    >
       <Flex h={16} alignItems="center" justifyContent="space-between" mx="auto">
         <IconButton
           size={"md"}

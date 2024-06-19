@@ -367,6 +367,7 @@ const Form3 = () => {
             pointerEvents="none"
             color="gray.300"
             fontSize="1.2em"
+            // eslint-disable-next-line
             children="₹"
           />
           <Input

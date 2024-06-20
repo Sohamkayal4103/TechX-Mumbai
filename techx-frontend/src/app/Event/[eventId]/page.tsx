@@ -40,6 +40,11 @@ const Event = ({ params }: { params: { eventId: string } }) => {
   const [url, setUrl] = useState("");
   const [signal, setSignal] = useState(0);
 
+  const greyCol = useColorModeValue("gray.200", "gray.600");
+  const yellowCol = useColorModeValue("yellow.500", "yellow.300");
+  const whiteCol = useColorModeValue("white", "gray.900");
+  const greyCol2 = useColorModeValue("gray.900", "gray.50");
+
   const getEvent = async () => {
     try {
       const response = await axios.get(
@@ -159,11 +164,7 @@ const Event = ({ params }: { params: { eventId: string } }) => {
             <Stack
               spacing={{ base: 4, sm: 6 }}
               direction={"column"}
-              divider={
-                <StackDivider
-                  borderColor={useColorModeValue("gray.200", "gray.600")}
-                />
-              }
+              divider={<StackDivider borderColor={greyCol} />}
             >
               <VStack spacing={{ base: 4, sm: 6 }}>
                 <Text fontSize={"lg"}>{event.description}</Text>
@@ -171,7 +172,7 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               <Box>
                 <Text
                   fontSize={{ base: "16px", lg: "18px" }}
-                  color={useColorModeValue("yellow.500", "yellow.300")}
+                  color={yellowCol}
                   fontWeight={"500"}
                   textTransform={"uppercase"}
                   mb={"4"}
@@ -209,7 +210,7 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               <Box>
                 <Text
                   fontSize={{ base: "16px", lg: "18px" }}
-                  color={useColorModeValue("yellow.500", "yellow.300")}
+                  color={yellowCol}
                   fontWeight={"500"}
                   textTransform={"uppercase"}
                   mb={"4"}
@@ -243,8 +244,8 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               ml={16}
               size={"lg"}
               py={"7"}
-              bg={useColorModeValue("gray.900", "gray.50")}
-              color={useColorModeValue("white", "gray.900")}
+              bg={greyCol2}
+              color={whiteCol}
               textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
@@ -261,8 +262,8 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               ml={16}
               size={"lg"}
               py={"7"}
-              bg={useColorModeValue("gray.900", "gray.50")}
-              color={useColorModeValue("white", "gray.900")}
+              bg={greyCol2}
+              color={whiteCol}
               textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
@@ -277,8 +278,8 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               size={"lg"}
               py={"7"}
               ml={16}
-              bg={useColorModeValue("gray.900", "gray.50")}
-              color={useColorModeValue("white", "gray.900")}
+              bg={greyCol2}
+              color={whiteCol}
               textTransform={"uppercase"}
               _hover={{
                 transform: "translateY(2px)",
@@ -294,8 +295,8 @@ const Event = ({ params }: { params: { eventId: string } }) => {
                 size={"lg"}
                 py={"7"}
                 ml={16}
-                bg={useColorModeValue("gray.900", "gray.50")}
-                color={useColorModeValue("white", "gray.900")}
+                bg={greyCol2}
+                color={whiteCol}
                 textTransform={"uppercase"}
                 _hover={{
                   transform: "translateY(2px)",

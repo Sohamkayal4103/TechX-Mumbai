@@ -407,8 +407,8 @@ const Form = () => {
     formData.append("domain", obj.domain);
     formData.append("image", obj.eventBanner);
     formData.append("location", obj.location);
-    formData.append("latitude", 0);
-    formData.append("longitude", 0);
+    formData.append("latitude", obj.lat);
+    formData.append("longitude", obj.lng);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${email}`

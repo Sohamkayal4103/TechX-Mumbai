@@ -12,11 +12,22 @@ import {
   Button,
   VStack,
 } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 const EventCard = ({ event }) => {
+  const router = useRouter();
   let img = event.image;
   img = `${process.env.NEXT_PUBLIC_BACKEND_URL}/images/${event.image}`;
-  console.log(img);
+  //console.log(img);
+
+  const handleRouting = async () => {
+    if (event?._id) {
+      router.push(`/Event/${event._id}`);
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <Center py={6}>
       <Box
@@ -29,7 +40,7 @@ const EventCard = ({ event }) => {
         p={6}
         overflow={"hidden"}
       >
-        <Box h={"210px"} bg={"gray.100"} mt={-6} mx={-6} mb={6}>
+        <Box maxH={"190px"} bg={"gray.100"} mt={-6} mx={-6} mb={6}>
           <Image
             src={
               event.image
@@ -55,6 +66,7 @@ const EventCard = ({ event }) => {
             color={useColorModeValue("gray.700", "white")}
             fontSize={"2xl"}
             fontFamily={"body"}
+            minH={"65px"}
           >
             {event.title || "Event Title"}
           </Heading>
@@ -105,6 +117,9 @@ const EventCard = ({ event }) => {
             transform: "translateY(-2px)",
             boxShadow: "lg",
             variant: "solid",
+          }}
+          onClick={() => {
+            handleRouting();
           }}
         >
           View Details

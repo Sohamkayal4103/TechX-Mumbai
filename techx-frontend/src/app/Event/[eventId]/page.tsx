@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import styles from "../../page.module.css";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import {
   Box,
   chakra,
@@ -39,6 +40,9 @@ const Event = ({ params }: { params: { eventId: string } }) => {
   const [lng, setLng] = useState(0);
   const [url, setUrl] = useState("");
   const [signal, setSignal] = useState(0);
+  const [stripeSess, setStripSess] = useState("");
+  const [stripeUrl, setStripeUrl] = useState("");
+  const router = useRouter();
 
   const greyCol = useColorModeValue("gray.200", "gray.600");
   const yellowCol = useColorModeValue("yellow.500", "yellow.300");
@@ -70,8 +74,9 @@ const Event = ({ params }: { params: { eventId: string } }) => {
   };
 
   const stripe = async () => {
-    console.log(price);
-    console.log(title);
+    // console.log(price);
+    // console.log(title);
+    console.log(user?.email);
     if (event?.price && event?.title && event?.description) {
       let response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stripe/create-checkout-session`,
@@ -85,15 +90,59 @@ const Event = ({ params }: { params: { eventId: string } }) => {
             name: event?.title,
             description: event?.description,
             image: event?.image,
-            id: event?._id,
+            id: params.eventId,
           }),
         }
       );
       let result = await response.json();
-      console.log(response);
+      console.log(result);
       setUrl(result.url);
       console.log(result.url);
+      setStripSess(result.id);
+      setStripeUrl(result.url);
     }
+  };
+
+  const handlePaymentRedirect = async () => {
+    await storeStripeSessionData(event?._id, stripeSess, event?.price);
+  };
+
+  const storeStripeSessionData = async (eventId, stripeSessionId, price) => {
+    const userRes = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/`
+    );
+    console.log(userRes);
+    console.log(userRes?.data[0]?._id);
+    console.log(
+      JSON.stringify({
+        userId: userRes?.data[0]?._id,
+        eventId: eventId,
+        sessionId: stripeSessionId,
+        price: price,
+      })
+    );
+    let response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/stripe/storeStripeSession`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          price: event?.price,
+          eventId: event?._id,
+          userId: userRes?.data[0]?._id,
+          sessionId: stripeSessionId,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    localStorage.setItem("eventId", eventId);
+    localStorage.setItem("userId", userRes?.data[0]?._id);
+    localStorage.setItem("sessionId", stripeSessionId);
+    localStorage.setItem("price", price);
+    router.push(stripeUrl);
   };
 
   const preLoad = async () => {
@@ -251,10 +300,11 @@ const Event = ({ params }: { params: { eventId: string } }) => {
                 transform: "translateY(2px)",
                 boxShadow: "lg",
               }}
+              onClick={() => {
+                handlePaymentRedirect();
+              }}
             >
-              <a href={url} aria-label="Category">
-                Buy Ticket (₹{event.price})
-              </a>
+              Buy Ticket (₹{event.price})
             </Button>
             <Button
               rounded={"none"}

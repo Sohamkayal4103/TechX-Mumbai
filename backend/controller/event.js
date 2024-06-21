@@ -1,6 +1,12 @@
+require("dotenv").config();
 const Event = require("../models/event");
 const asyncHandler = require("express-async-handler");
 let nodemailer = require("nodemailer");
+const user = require("../models/user");
+const event = require("../models/event");
+const stripe = require("stripe")(process.env.STRIPE_API_KEY);
+const { updateUserByParams } = require("./user");
+
 const getEvents = async (req, res) => {
   res
     .status(200)
@@ -26,7 +32,6 @@ const getEventById = async (req, res) => {
 };
 
 const updateAttendees = asyncHandler(async (req, res) => {
-  const event = await Event.findById(req.params.id);
   const id = req.params.id;
   const updateEvent = await Event.findByIdAndUpdate(
     id,
@@ -40,6 +45,32 @@ const updateAttendees = asyncHandler(async (req, res) => {
   } else {
     res.status(404);
     console.log("Event not found");
+  }
+});
+
+const updateAttendeesByParams = asyncHandler(async (eventId, userId) => {
+  const userExists = await Event.find({
+    _id: eventId,
+    attendees: userId,
+  });
+  console.log(userExists);
+  if (userExists.length > 0) {
+    console.log("event exists in teh array");
+    return;
+  }
+  const updateEvent = await Event.findByIdAndUpdate(
+    eventId,
+    {
+      $push: { attendees: userId },
+    },
+    { new: true }
+  );
+  if (updateEvent) {
+    console.log("Event updated");
+    return true;
+  } else {
+    console.log("Event not found");
+    return false;
   }
 });
 
@@ -164,10 +195,44 @@ const createEvent = asyncHandler(async (req, res) => {
   }
 });
 
+const addPaymentDetails = asyncHandler(async (req, res) => {
+  
+});
+
+const triggerAfterPayment = asyncHandler(async (req, res) => {
+  const { checkoutSessionId, userId, eventId } = req.body;
+  console.log(checkoutSessionId);
+  console.log(userId);
+  console.log(eventId);
+  const session = await stripe.checkout.sessions.retrieve(checkoutSessionId);
+  console.log(session.payment_status);
+  if (session.payment_status === "paid") {
+    console.log("user has paid now");
+    try {
+      await updateAttendeesByParams(eventId, userId);
+      await updateUserByParams(userId, eventId);
+      res.send({
+        status: true,
+        message: "payment successful",
+      });
+    } catch (e) {
+      console.log(e);
+      res.send({
+        status: false,
+        message: "payment not successful",
+      });
+    }
+  } else {
+    console.log("Payment not done");
+  }
+});
+
 module.exports = {
   getEvents,
   getEventById,
   createEvent,
   updateAttendees,
   updateEventApproval,
+  updateAttendeesByParams,
+  triggerAfterPayment,
 };

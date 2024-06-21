@@ -30,6 +30,7 @@ const {
   createEvent,
   updateEventApproval,
   updateAttendees,
+  triggerAfterPayment,
 } = require("../controller/event");
 
 router.route("/").get(getEvents);
@@ -37,5 +38,6 @@ router.route("/:id").get(getEventById);
 router.route("/add").post(upload.single("image"), createEvent);
 router.route("/approval/:id").put(updateEventApproval);
 router.route("/attendees/:id").put(updateAttendees);
+router.route("/checkPayment").post(upload.single("image"), triggerAfterPayment);
 
 module.exports = router;

@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       default: [],
+      unique: true,
     },
   ],
   organizedEvents: [
@@ -25,6 +26,7 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       default: [],
+      unique: true,
     },
   ],
 
@@ -33,6 +35,7 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       default: [],
+      unique: true,
     },
   ],
   attendedEvents: [
@@ -40,6 +43,7 @@ const userSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Event",
       default: [],
+      unique: true,
     },
   ],
 });

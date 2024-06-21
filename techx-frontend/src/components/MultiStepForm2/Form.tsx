@@ -41,6 +41,7 @@ const obj = {
   prize: 0,
   lat: 0,
   lng: 0,
+  stripeSession: "",
 };
 console.log(obj);
 
@@ -335,9 +336,11 @@ const Form2 = () => {
 const Form3 = () => {
   const [tickets, setTickets] = useState(0);
   const [price, setPrice] = useState(0);
-
+  const stripeSessionId =
+    "cs_test_a1Owu3lQHxnXl0F2YnaWNGGWBULbFzQDtgvsD83dMxObp29fVExCtwFk9s";
   obj.tickets = parseInt(tickets);
   obj.price = parseInt(price);
+  obj.stripeSession = stripeSessionId;
 
   console.log(obj);
 
@@ -397,6 +400,8 @@ const Form = () => {
   const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = async () => {
+    const sessionId =
+      "cs_test_a1Owu3lQHxnXl0F2YnaWNGGWBULbFzQDtgvsD83dMxObp29fVExCtwFk9s";
     const formData = new FormData();
     formData.append("title", obj.title);
     formData.append("description", obj.description);
@@ -409,6 +414,7 @@ const Form = () => {
     formData.append("location", obj.location);
     formData.append("latitude", obj.lat);
     formData.append("longitude", obj.lng);
+    formData.append("sessionId", obj.stripeSession);
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/${email}`
@@ -416,10 +422,13 @@ const Form = () => {
     const data = await res.json();
     setId(data._id);
     console.log(id);
-    formData.append("organizer", data._id);
+    formData.append("userId", data._id);
     console.log(formData);
     axios
-      .post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/add`, formData)
+      .post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/checkPayment`,
+        formData
+      )
       .then((res) => {
         console.log(res);
       })

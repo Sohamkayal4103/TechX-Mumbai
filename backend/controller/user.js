@@ -1,3 +1,4 @@
+const event = require("../models/event");
 const User = require("../models/user");
 const asyncHandler = require("express-async-handler");
 
@@ -71,6 +72,29 @@ const updateUser = asyncHandler(async (req, res) => {
   }
 });
 
+const updateUserByParams = asyncHandler(async (userId, eventId) => {
+  const eventExists = await User.find({
+    _id: userId,
+    attendedEvents: eventId,
+  });
+  if (eventExists.length > 0) {
+    console.log("event exists in array");
+    return;
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    userId,
+    { $push: { attendedEvents: eventId } },
+    { new: true }
+  );
+  if (updateUser) {
+    console.log("user updated");
+    return true;
+  } else {
+    console.log("User not found");
+    return false;
+  }
+});
+
 const getUserfromemail = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email: req.params.email });
   if (user) {
@@ -81,4 +105,10 @@ const getUserfromemail = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { getUsers, addUser, getUserfromemail, updateUser };
+module.exports = {
+  getUsers,
+  addUser,
+  getUserfromemail,
+  updateUser,
+  updateUserByParams,
+};

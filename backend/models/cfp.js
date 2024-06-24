@@ -21,21 +21,17 @@ const cfpSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Event",
   },
-
-  github: {
-    type: String,
-  },
   linkedin: {
     type: String,
+    default: "",
   },
   twitter: {
     type: String,
+    default: "",
   },
-  website: {
+  otherLink: {
     type: String,
-  },
-  blog: {
-    type: String,
+    default: "",
   },
 });
 

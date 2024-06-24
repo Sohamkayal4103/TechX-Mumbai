@@ -145,6 +145,14 @@ const Event = ({ params }: { params: { eventId: string } }) => {
     router.push(stripeUrl);
   };
 
+  const handleSpeakerRouting = async () => {
+    router.push(`/Speakers/${event._id}`);
+  };
+
+  const handleVolunteerRouting = async () => {
+    router.push(`/Volunteers/${event._id}`);
+  };
+
   const preLoad = async () => {
     await getEvent();
     await stripe();
@@ -319,6 +327,9 @@ const Event = ({ params }: { params: { eventId: string } }) => {
                 transform: "translateY(2px)",
                 boxShadow: "lg",
               }}
+              onClick={() => {
+                handleSpeakerRouting();
+              }}
             >
               Apply as speaker
             </Button>
@@ -334,6 +345,9 @@ const Event = ({ params }: { params: { eventId: string } }) => {
               _hover={{
                 transform: "translateY(2px)",
                 boxShadow: "lg",
+              }}
+              onClick={() => {
+                handleVolunteerRouting();
               }}
             >
               Apply as volunteer

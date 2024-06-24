@@ -32,24 +32,21 @@ const createCFP = asyncHandler(async (req, res) => {
     isApproved,
     userId,
     eventId,
-    github,
     linkedin,
     twitter,
-    website,
-    blog,
+    otherLink,
   } = req.body;
-
+  console.log(req.body);
+  // if (!isApproved) isApproved = false;
   const cfp = await CFP.create({
     title,
     description,
     isApproved,
     userId,
     eventId,
-    github,
     linkedin,
     twitter,
-    website,
-    blog,
+    otherLink,
   });
 
   if (cfp) {
@@ -60,11 +57,9 @@ const createCFP = asyncHandler(async (req, res) => {
       isApproved: cfp.isApproved,
       userId: cfp.userId,
       eventId: cfp.eventId,
-      github: cfp.github,
       linkedin: cfp.linkedin,
       twitter: cfp.twitter,
-      website: cfp.website,
-      blog: cfp.blog,
+      otherLink: cfp.otherLink,
     });
   } else {
     res.status(400);

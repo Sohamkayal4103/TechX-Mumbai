@@ -29,8 +29,8 @@ const theme = extendTheme({ colors, config });
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Auth0Provider
-      domain="dev-uubmit4tpy5bi5v1.us.auth0.com"
-      clientId="GbmkArnbfqtiCH6dxQqqTdBAXpTJvsqv"
+      domain={import.meta.env.VITE_AUTH0_DOMAIN}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT_SECRET}
       authorizationParams={{
         redirect_uri: window.location.origin,
       }}

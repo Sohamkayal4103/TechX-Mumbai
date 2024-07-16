@@ -4,7 +4,8 @@ const express = require("express");
 const userRoutes = require("./routes/user");
 const eventRoutes = require("./routes/event");
 const cfpsRoutes = require("./routes/cfp");
-const striperoute = require("./routes/stripe");
+const stripeRoutes = require("./routes/stripe");
+const volunteerRoutes = require("./routes/volunteer");
 const app = express();
 
 //middleware
@@ -27,7 +28,8 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/cfps", cfpsRoutes);
-app.use("/api/stripe", striperoute);
+app.use("/api/stripe", stripeRoutes);
+app.use("/api/volunteers", volunteerRoutes);
 app.use("/images", express.static("images"));
 
 const start = async () => {
@@ -41,4 +43,4 @@ const start = async () => {
 
 start();
 
-export default app;
+//export default app;
